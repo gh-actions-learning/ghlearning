@@ -1,0 +1,11 @@
+name: testing1
+
+on: push
+
+jobs:
+  j1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: testing1
+        run: |
+          kubectl get pods -n github-runners
