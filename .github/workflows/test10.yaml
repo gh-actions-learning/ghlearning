@@ -4,7 +4,7 @@ on: push
 
 jobs:
   j1:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, k8s]
     steps:
       - name: testing1
         run: |
