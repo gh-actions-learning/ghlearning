@@ -23,3 +23,7 @@ jobs:
         working-directory: src/apps
         run: |
           pytest --cov=app --cov-report=term-missing
+
+      - name: Check Docker version
+        run: |
+          docker --version
