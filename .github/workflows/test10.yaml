@@ -15,9 +15,8 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        working-directory: /home/runner/work/ghlearning/ghlearning/src/apps
+        working-directory: /home/runner/_work/ghlearning/ghlearning/src/apps
         run: |
-          pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run Pytest with coverage
