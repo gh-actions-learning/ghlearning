@@ -1,4 +1,4 @@
-name: testing100000
+name: python-ci-cd
 
 on: push
 
@@ -6,6 +6,21 @@ jobs:
   j1:
     runs-on: [self-hosted, k8s]
     steps:
-      - name: testing1
+      - name: checkout
+        uses: actions/checkout@v3 
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        working-directory: /home/runner/work/ghlearning/ghlearning/src/apps
         run: |
-          kubectl get pods -n github-runners
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Pytest with coverage
+        working-directory: src/apps
+        run: |
+          pytest --cov=app --cov-report=term-missing
