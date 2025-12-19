@@ -22,7 +22,10 @@ jobs:
       - name: Run Pytest with coverage
         working-directory: src/apps
         run: |
-          pytest --cov=app --cov-report=term-missing
+          pytest \
+            --cov=app \
+            --cov-report=term-missing \
+            --cov-report=xml
       
       - name: sonar qube scanner 
         working-directory: src/apps
