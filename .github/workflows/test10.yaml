@@ -33,7 +33,8 @@ jobs:
           pysonar \
             --sonar-host-url=http://20.125.27.209:9000 \
             --sonar-token=sqp_f98eb2ef625524f319264da61b4d650c6f89ba0b \
-            --sonar-project-key=test
+            --sonar-project-key=test \
+            --coverage-report-path=coverage.xml
 
       - name: Check Docker version
         run: |
