@@ -36,7 +36,7 @@ jobs:
             --sonar-project-key=test \
             --coverage-report-path=coverage.xml \
             --sonar.coverage.exclusions=**/test_*.py,**/*_test.py \
-            --sonar.exclusions=**/coverage.xml
+            --sonar.exclusions=coverage.xml
 
       - name: Sonar Quality Gate Check
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
