@@ -36,6 +36,10 @@ jobs:
             --sonar-project-key=test \
             --coverage-report-path=coverage.xml
 
-      - name: Check Docker version
-        run: |
-          docker --version
+      - name: Quality Gate
+        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+        with:
+          scanMetadataReportFile: /src/apps/.sonar/report-task.txt
+        env:
+          SONAR_TOKEN: sqp_f98eb2ef625524f319264da61b4d650c6f89ba0b
+          SONAR_HOST_URL: http://20.125.27.209:9000
