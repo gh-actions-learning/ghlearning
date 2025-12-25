@@ -50,7 +50,7 @@ jobs:
           curl -L https://github.com/moby/buildkit/releases/latest/download/buildkit-linux-amd64.tar.gz
           tar -xz -C /usr/local/bin --strip-components=1 bin/buildctl
 
-      - name: Build image via remote BuildKit
+      - name: Build image vi remote BuildKit
         working-directory: src/apps
         run: |
           buildctl \
