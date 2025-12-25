@@ -52,16 +52,19 @@ jobs:
           sudo mv bin/buildctl /usr/local/bin/buildctl
           sudo chmod +x /usr/local/bin/buildctl
 
+          buildctl --addr tcp://buildkitd:1234 debug workers
 
-      - name: Build image vi remote BuildKit
-        working-directory: src/apps
-        run: |
-          buildctl \
-            --addr tcp://buildkitd:1234 \
-            build \
-            --frontend dockerfile.v0 \
-            --local context=. \
-            --local dockerfile=. \
-            --output type=image,name=my-flask-app:latest,push=false
+
+
+      # - name: Build image vi remote BuildKit
+      #   working-directory: src/apps
+      #   run: |
+      #     buildctl \
+      #       --addr tcp://buildkitd:1234 \
+      #       build \
+      #       --frontend dockerfile.v0 \
+      #       --local context=. \
+      #       --local dockerfile=. \
+      #       --output type=image,name=my-flask-app:latest,push=false
 
           
