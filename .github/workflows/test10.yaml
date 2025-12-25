@@ -44,3 +44,19 @@ jobs:
         env:
           SONAR_TOKEN: sqp_f98eb2ef625524f319264da61b4d650c6f89ba0b
           SONAR_HOST_URL: http://20.125.27.209:9000
+
+      - name: install buildkit cli
+        run: |
+          curl -L https://github.com/moby/buildkit/releases/latest/download/buildkit-linux-amd64.tar.gz
+          tar -xz -C /usr/local/bin --strip-components=1 bin/buildctl
+
+      - name: Build image via remote BuildKit
+        working-directory: src/apps
+        run: |
+          buildctl \
+            --addr tcp://buildkitd:1234 \
+            build \
+            --frontend dockerfile.v0 \
+            --local context=. \
+            --local dockerfile=. \
+            --output type=image,name=my-flask-app:latest,push=false
