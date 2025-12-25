@@ -56,7 +56,7 @@ jobs:
 
 
       - name: Build image vi remote BuildKit
-        working-directory: src/apps
+        working-directory: src/
         run: |
           buildctl \
             --addr tcp://buildkitd:1234 \
