@@ -49,9 +49,8 @@ jobs:
         run: |
           curl -L https://github.com/moby/buildkit/releases/download/v0.13.2/buildkit-v0.13.2.linux-amd64.tar.gz \
           | tar -xz
-          mv bin/buildctl /usr/local/bin/
-          chmod +x /usr/local/bin/buildctl
-          buildctl --version
+          sudo mv bin/buildctl /usr/local/bin/buildctl
+          sudo chmod +x /usr/local/bin/buildctl
 
 
       # - name: Build image vi remote BuildKit
