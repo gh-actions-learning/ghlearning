@@ -58,8 +58,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          username: ${{ secrets.GHCRA }}
+          password: ${{ secrets.GHCRP }}
 
 
       - name: Build image vi remote BuildKit
