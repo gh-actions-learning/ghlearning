@@ -54,6 +54,13 @@ jobs:
 
           buildctl --addr tcp://buildkitd:1234 debug workers
 
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
 
       - name: Build image vi remote BuildKit
         working-directory: src/
@@ -65,8 +72,8 @@ jobs:
             --output type=image,name=ghcr.io/gh-actions-learning/app:v1,push=true
         env:
           BUILDKIT_HOST: tcp://buildkitd:1234
-          BUILDKIT_REGISTRY_USERNAME: ${{ secrets.GHCRA }}
-          BUILDKIT_REGISTRY_PASSWORD: ${{ secrets.GHCRP }}
+          # BUILDKIT_REGISTRY_USERNAME: ${{ secrets.GHCRA }}
+          # BUILDKIT_REGISTRY_PASSWORD: ${{ secrets.GHCRP }}
 
 
           
