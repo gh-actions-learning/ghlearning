@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.GHCRP }}
 
 
-      - name: Build image vi remote BuildKit
+      - name: Build image via remote BuildKit
         working-directory: src/
         run: |
           buildctl build \
