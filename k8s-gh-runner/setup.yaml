@@ -1,0 +1,152 @@
+vi ns.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: github-runners
+
+
+kubectl apply -f ns.yaml
+
+---
+
+vi sa.yaml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-runner-sa
+  namespace: github-runners
+
+kubectl apply -f sa.yaml 
+
+---
+
+vi role.yaml 
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: github-runner-role
+  namespace: github-runners
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets", "statefulsets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+
+kubectl apply -f role.yaml 
+
+---
+
+vi rb.yaml 
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: github-runner-rb
+  namespace: github-runners
+subjects:
+- kind: ServiceAccount
+  name: github-runner-sa
+  namespace: github-runners
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: github-runner-role
+
+
+kubectl apply -f rb.yaml 
+
+---
+
+vi secret.yaml 
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-runner-secret
+  namespace: github-runners
+type: Opaque
+stringData:
+  RUNNER_TOKEN: <GITHUB_RUNNER_REGISTRATION_TOKEN>
+
+
+kubectl apply -f secert.yaml
+
+---
+
+vi deploy.yaml 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-runner
+  namespace: github-runners
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-runner
+  template:
+    metadata:
+      labels:
+        app: github-runner
+    spec:
+      serviceAccountName: github-runner-sa
+      restartPolicy: Always
+
+      containers:
+      - name: runner
+        image: asarasaisrujan/ghrn:v1   # YOUR IMAGE
+        imagePullPolicy: Always
+
+        env:
+        - name: GITHUB_URL
+          value: "https://github.com/gh-actions-learning/ghlearning"
+
+        - name: RUNNER_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+
+        - name: RUNNER_LABELS
+          value: "k8s"
+
+        - name: RUNNER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-runner-secret
+              key: RUNNER_TOKEN
+
+
+
+
+-----------------------------------------
+docker buildkit d and buildkit cli link
+-----------------------------------------
+
+
+sudo docker run -d \
+  --name buildkitd \
+  --network ci-net \
+  --privileged \
+  --entrypoint buildkitd \
+  moby/buildkit:v0.13.2 \
+  --addr tcp://0.0.0.0:1234
+
+
+3️⃣ Run your runner container on SAME network
+
+docker run -d \
+  --name gh-runner \
+  --network ci-net \
+  my-github-runner-image

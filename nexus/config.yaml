@@ -1,0 +1,256 @@
+sudo apt install docker-compose
+
+sudo vi docker-compose.yml
+
+version: "3"
+services:
+  nexus:
+    image: sonatype/nexus3
+    restart: always
+    volumes:
+      - "nexus-data:/sonatype-work"
+    ports:
+      - "8081:8081"
+      - "8085:8085"
+volumes:
+  nexus-data: {}
+
+
+sudo docker-compose up -d
+
+sudo docker exec -it kaka_nexus_1 cat /nexus-data/admin.password  
+
+
+
+--------------------------------
+
+Why Artifact Repositories Exist (Beyond Storage & Versioning)
+
+Artifact repositories solve operational, delivery, security, and scalability problems — not just storage.
+
+I’ll explain the top extra benefits with use cases and outputs.
+
+---
+1️⃣ Build Reproducibility & Immutability
+
+Problem with SCM (Even If You Store Artifacts)
+
+Artifacts in SCM can be overwritten
+
+No guarantee the artifact wasn’t modified
+
+Artifact Repo Benefit
+
+Artifacts are immutable (cannot be changed once published)
+
+Guarantees exact same binary
+
+Use Case
+
+Production incident → need exact artifact.
+
+Output
+Checksum verified
+Artifact unchanged since build
+100% reproducible deployment
+
+
+---
+
+2️⃣ Promotion Across Environments (Dev → QA → Prod)
+Problem with SCM
+
+No native concept of promotion
+
+Requires copying files or tagging commits
+
+Artifact Repo Benefit
+
+Promote artifacts without rebuilding
+
+Same binary flows through environments
+
+Use Case
+
+Release approval pipeline.
+
+Output
+Artifact promoted from QA to PROD
+No rebuild triggered
+Release approved safely
+
+
+---
+3️⃣ Dependency Proxying & Caching
+Problem with SCM
+
+SCM cannot proxy Maven, npm, Docker, etc.
+
+Builds depend on external internet
+
+Artifact Repo Benefit
+
+Acts as proxy/cache for dependencies
+
+Works even if internet is down
+
+Use Case
+
+External repo outage.
+
+Output
+Dependencies served from local cache
+Build successful
+Zero downtime
+
+---
+4️⃣ CI/CD Performance & Scalability
+
+Problem with SCM
+
+SCM optimized for commits, not downloads
+
+Large pipelines = throttling & slowness
+
+Artifact Repo Benefit
+
+CDN-like delivery
+
+Parallel downloads
+
+Optimized binary transfer
+
+Use Case
+
+Multiple pipelines pulling same artifact.
+
+Output
+Artifact downloaded in 1.8s
+20 parallel pipelines successful
+
+---
+5️⃣ Security, Compliance & Governance
+
+Problem with SCM
+
+Same access model for code & artifacts
+
+No binary-level scanning
+
+Artifact Repo Benefit
+
+Role-based access per repo
+
+Vulnerability scanning (CVEs)
+
+License compliance
+
+Use Case
+
+Enterprise security audit.
+
+Output
+No critical vulnerabilities found
+License policy compliant
+Audit passed
+
+
+---
+6️⃣ Metadata & Traceability
+
+Problem with SCM
+
+SCM tracks code history, not build history
+
+Hard to trace which build went to prod
+
+Artifact Repo Benefit
+
+Stores metadata:
+
+Build number
+
+Git commit
+
+Jenkins job
+
+Timestamp
+
+Use Case
+
+Incident investigation.
+
+Output
+Artifact built from commit 9f3a21
+Built by Jenkins job #182
+Deployed on 2025-09-10
+
+---
+7️⃣ Technology-Specific Repository Support
+
+Problem with SCM
+
+SCM is generic file storage
+
+No understanding of artifact formats
+
+Artifact Repo Benefit
+
+Native support for:
+
+Maven
+
+npm
+
+Docker
+
+Helm
+
+PyPI
+
+Use Case
+
+Polyglot microservices.
+
+Output
+Docker image pulled successfully
+npm package resolved
+Helm chart installed
+
+---
+
+8️⃣ Retention, Cleanup & Cost Control
+
+Problem with SCM
+
+Old artifacts stay forever
+
+Manual cleanup risks deleting important data
+
+Artifact Repo Benefit
+
+Automated retention policies
+
+Keep last N versions
+
+Use Case
+
+Storage optimization.
+
+Output
+Artifacts older than 90 days deleted
+Storage reduced by 65%
+
+Why SCM Still Isn’t Enough (Even If It Stores Artifacts)
+SCM Was Designed For:
+
+✔ Human collaboration
+✔ Text diffs
+✔ Frequent small changes
+
+Artifact Repo Was Designed For:
+
+✔ Machine consumption
+✔ Immutable binaries
+✔ High-speed delivery
+✔ Security & compliance

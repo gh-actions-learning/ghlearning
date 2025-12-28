@@ -1,0 +1,86 @@
+--------------------------
+PUSH TO PROFILE
+---------------------------
+---------------------------
+
+GHCR images are NOT stored inside repos.
+They are stored under a USER or ORG namespace only.
+
+---
+
+sudo docker login ghcr.io -u saisrujan-asara
+
+Password:
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credential-stores
+
+Login Succeeded
+
+-------
+
+sudo docker push ghcr.io/saisrujan-asara/ghrn-py:v1
+
+The push refers to repository [ghcr.io/saisrujan-asara/ghrn-py]
+82dbdb2a36e0: Pushed
+1fca3662ec49: Pushed
+a38a296b6522: Pushed
+793813f5f690: Layer already exists
+a44c0240e977: Layer already exists
+e7fdce452aae: Layer already exists
+5f70bf18a086: Layer already exists
+a1cc8ff2494d: Layer already exists
+96be5d58d002: Layer already exists
+a4e72d5dc697: Layer already exists
+cdcf686e6f96: Layer already exists
+b6743886c069: Layer already exists
+3cc982388b71: Layer already exists
+v1: digest: sha256:0436e2cdabf95612200e0f437c8b24d6fae9d1ab4fa84ec800f5b6d7bd4f27f2 size: 305
+
+------------------------------
+------------------------------
+PUSH TO REPO INSIDE ORG
+-----------------------------
+-----------------------------
+
+we need to use org name if we want to push to repo under org
+
+sudo docker tag asarasaisrujan/ghrn-py:v1 \
+ghcr.io/gh-actions-learning/ghrn-py:v1
+
+
+sushmitha@DESKTOP-9M54995:~$ sudo docker push ghcr.io/gh-actions-learning/ghrn-py:v1
+
+
+The push refers to repository [ghcr.io/gh-actions-learning/ghrn-py]
+82dbdb2a36e0: Mounted from saisrujan-asara/ghrn-py
+1fca3662ec49: Mounted from saisrujan-asara/ghrn-py
+a38a296b6522: Mounted from saisrujan-asara/ghrn-py
+793813f5f690: Mounted from saisrujan-asara/ghrn-py
+a44c0240e977: Mounted from saisrujan-asara/ghrn-py
+e7fdce452aae: Mounted from saisrujan-asara/ghrn-py
+5f70bf18a086: Mounted from saisrujan-asara/ghrn-py
+a1cc8ff2494d: Mounted from saisrujan-asara/ghrn-py
+96be5d58d002: Mounted from saisrujan-asara/ghrn-py
+a4e72d5dc697: Mounted from saisrujan-asara/ghrn-py
+cdcf686e6f96: Mounted from saisrujan-asara/ghrn-py
+b6743886c069: Mounted from saisrujan-asara/ghrn-py
+3cc982388b71: Mounted from saisrujan-asara/ghrn-py
+v1: digest: sha256:0436e2cdabf95612200e0f437c8b24d6fae9d1ab4fa84ec800f5b6d7bd4f27f2 size: 3051
+
+
+--------------------------------
+--------------------------------
+Link the package to specific repo
+--------------------------------
+--------------------------------
+
+here api is repo name
+
+- name: Login to GHCR
+  run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+- name: Build & push
+  run: |
+    docker build -t ghcr.io/${{ github.repository_owner }}/api:latest .
+    docker push ghcr.io/${{ github.repository_owner }}/api:latest
