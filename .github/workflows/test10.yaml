@@ -52,7 +52,7 @@ jobs:
           sudo mv bin/buildctl /usr/local/bin/buildctl
           sudo chmod +x /usr/local/bin/buildctl
 
-          buildctl --addr tcp://buildkitd:1234 debug workers
+          buildctl --addr tcp://localhost:1234 debug workers
 
       - name: Login to GHCR
         uses: docker/login-action@v1
