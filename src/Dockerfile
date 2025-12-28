@@ -1,5 +1,7 @@
 FROM python:3.9-slim
 
+LABEL org.opencontainers.image.source=https://github.com/gh-actions-learning/ghlearning.git
+
 WORKDIR /app
 
 COPY apps/requirements.txt .

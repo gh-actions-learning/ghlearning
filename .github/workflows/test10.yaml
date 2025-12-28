@@ -72,8 +72,5 @@ jobs:
             --output type=image,name=ghcr.io/gh-actions-learning/ghlearn:v1,push=true
         env:
           BUILDKIT_HOST: tcp://buildkitd:1234
-          # BUILDKIT_REGISTRY_USERNAME: ${{ secrets.GHCRA }}
-          # BUILDKIT_REGISTRY_PASSWORD: ${{ secrets.GHCRP }}
-
 
           
