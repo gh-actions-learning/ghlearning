@@ -69,7 +69,7 @@ jobs:
             --frontend dockerfile.v0 \
             --local context=. \
             --local dockerfile=. \
-            --output type=image,name=ghcr.io/gh-actions-learning/ghlearn:v1,push=true
+            --output type=image,name=ghcr.io/gh-actions-learning/app:v1,push=true
         env:
           BUILDKIT_HOST: tcp://buildkitd:1234
 
