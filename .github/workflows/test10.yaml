@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.GHCRP }}
 
 
-      - name: Build image via remote BuildKit
+      - name: Build image via remote BuildKitd
         working-directory: src/
         run: |
           buildctl build \

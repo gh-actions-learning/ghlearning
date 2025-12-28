@@ -77,7 +77,7 @@ metadata:
   namespace: github-runners
 type: Opaque
 stringData:
-  RUNNER_TOKEN: <GITHUB_RUNNER_REGISTRATION_TOKEN>
+  RUNNER_TOKEN: A23ZVMXUT7S7OZ4245FXEU3JKEYDY
 
 
 kubectl apply -f secert.yaml
@@ -106,7 +106,7 @@ spec:
 
       containers:
       - name: runner
-        image: asarasaisrujan/ghrn:v1   # YOUR IMAGE
+        image: asarasaisrujan/ghrn-py:v1   # YOUR IMAGE
         imagePullPolicy: Always
 
         env:
@@ -127,8 +127,14 @@ spec:
               name: github-runner-secret
               key: RUNNER_TOKEN
 
-
-
+      - name: buildkitd
+        image: moby/buildkit:v0.12.5
+        args:
+          - --addr=tcp://0.0.0.0:1234
+        securityContext:
+          privileged: true
+        ports:
+          - containerPort: 1234
 
 -----------------------------------------
 docker buildkit d and buildkit cli link
