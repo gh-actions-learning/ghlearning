@@ -14,12 +14,12 @@ jobs:
         with:
           python-version: '3.9'
 
-      # - name: Setup Java
-      #   uses: actions/setup-java@v4
-      #   with:
-      #     distribution: 'temurin'
-      #     java-version: '17'
-      #     architecture: 'aarch64'
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          architecture: 'aarch64'
 
       - name: Install dependencies
         working-directory: /home/runner/_work/ghlearning/ghlearning/src/apps
@@ -45,10 +45,6 @@ jobs:
       #       --sonar.coverage.exclusions=**/test_*.py,**/*_test.py \
       #       --verbose
 
-      - name: Install Java
-        working-directory: src/apps
-        run: |
-          apt-get update && apt-get install -y openjdk-17-jre-headless
 
       - name: Create sonar-project.properties
         working-directory: src/apps
