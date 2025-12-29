@@ -27,7 +27,7 @@ jobs:
             --cov-report=term-missing \
             --cov-report=xml
       
-      - name: sonar qube scanner with pysonar
+      - name: sonar qube scanner with Pysonar
         working-directory: src/apps
         run: |
           pysonar \

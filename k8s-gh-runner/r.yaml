@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: github-runners
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-runner-sa
+  namespace: github-runners 
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: github-runner-role
+  namespace: github-runners
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets", "statefulsets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: github-runner-rb
+  namespace: github-runners
+subjects:
+- kind: ServiceAccount
+  name: github-runner-sa
+  namespace: github-runners
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: github-runner-role
+
+--- 
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-runner-secret
+  namespace: github-runners
+type: Opaque
+stringData:
+  RUNNER_TOKEN: A23ZVMUZ7XZIUWPTRIARIUTJKLCRS
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-runner
+  namespace: github-runners
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-runner
+  template:
+    metadata:
+      labels:
+        app: github-runner
+    spec:
+      serviceAccountName: github-runner-sa
+      restartPolicy: Always
+
+      containers:
+      - name: runner
+        image: asarasaisrujan/ghrn-py:v1   # YOUR IMAGE
+        imagePullPolicy: Always
+
+        env:
+        - name: GITHUB_URL
+          value: "https://github.com/gh-actions-learning/ghlearning"
+
+        - name: RUNNER_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+
+        - name: RUNNER_LABELS
+          value: "k8s"
+
+        - name: RUNNER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-runner-secret
+              key: RUNNER_TOKEN
+
+      - name: buildkitd
+        image: moby/buildkit:v0.12.5
+        args:
+          - --addr=tcp://0.0.0.0:1234
+        securityContext:
+          privileged: true
+        ports:
+          - containerPort: 1234
