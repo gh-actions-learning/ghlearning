@@ -36,6 +36,7 @@ jobs:
             --sonar-project-key=test1 \
             --coverage-report-path=coverage.xml \
             --sonar.coverage.exclusions=**/test_*.py,**/*_test.py \
+            --sonar.scanner.skipJreProvisioning=true \
             --verbose
 
       - name: Sonar Quality Gate Check
