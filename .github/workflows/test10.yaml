@@ -14,12 +14,12 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          architecture: 'aarch64'
+      # - name: Setup Java
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     distribution: 'temurin'
+      #     java-version: '17'
+      #     architecture: 'aarch64'
 
       - name: Install dependencies
         working-directory: /home/runner/_work/ghlearning/ghlearning/src/apps
@@ -34,16 +34,37 @@ jobs:
             --cov-report=term-missing \
             --cov-report=xml
       
-      - name: sonar qube scanner with pysonar
+      # - name: sonar qube scanner with pysonar
+      #   working-directory: src/apps
+      #   run: |
+      #     pysonar \
+      #       --sonar-host-url=http://20.125.27.209:9000 \
+      #       --sonar-token=sqp_d830cb793975a2b09f761d002e0671c967357669 \
+      #       --sonar-project-key=test1 \
+      #       --coverage-report-path=coverage.xml \
+      #       --sonar.coverage.exclusions=**/test_*.py,**/*_test.py \
+      #       --verbose
+
+      - name: Install Java
         working-directory: src/apps
         run: |
-          pysonar \
-            --sonar-host-url=http://20.125.27.209:9000 \
-            --sonar-token=sqp_d830cb793975a2b09f761d002e0671c967357669 \
-            --sonar-project-key=test1 \
-            --coverage-report-path=coverage.xml \
-            --sonar.coverage.exclusions=**/test_*.py,**/*_test.py \
-            --verbose
+          apt-get update && apt-get install -y openjdk-17-jre-headless
+
+      - name: Create sonar-project.properties
+        working-directory: src/apps
+        run: |
+          cat > sonar-project.properties << EOF
+          sonar.projectKey=test1
+          sonar.host.url=http://20.125.27.209:9000
+          sonar.token=sqp_d830cb793975a2b09f761d002e0671c967357669
+          sonar.python.coverage.reportPaths=coverage.xml
+          sonar.coverage.exclusions=**/test_*.py,**/*_test.py
+          sonar.scanner.skipJreProvisioning=true
+          EOF
+
+      - name: Run pysonar
+        working-directory: src/apps
+        run: pysonar --verbose
 
       - name: Sonar Quality Gate Check
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
