@@ -34,7 +34,7 @@ jobs:
           pysonar \
             --sonar-host-url=http://20.125.27.209:9000 \
             --sonar-token=sqp_d830cb793975a2b09f761d002e0671c967357669 \
-            --sonar-project-key=test1
+            --sonar-project-key=test1 \
             --coverage-report-path=coverage.xml \
             --sonar.coverage.exclusions=**/test_*.py,**/*_test.py \
             --verbose
@@ -44,7 +44,7 @@ jobs:
         with:
           scanMetadataReportFile: src/apps/.sonar/report-task.txt
         env:
-          SONAR_TOKEN: sqp_f98eb2ef625524f319264da61b4d650c6f89ba0b
+          SONAR_TOKEN: sqp_d830cb793975a2b09f761d002e0671c967357669
           SONAR_HOST_URL: http://20.125.27.209:9000
 
       - name: install buildkit CLI
