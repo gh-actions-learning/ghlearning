@@ -35,7 +35,8 @@ jobs:
             --sonar-token=sqp_d830cb793975a2b09f761d002e0671c967357669 \
             --sonar-project-key=test1
             --coverage-report-path=coverage.xml \
-            --sonar.coverage.exclusions=**/test_*.py,**/*_test.py
+            --sonar.coverage.exclusions=**/test_*.py,**/*_test.py \
+            --verbose
 
       - name: Sonar Quality Gate Check
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
