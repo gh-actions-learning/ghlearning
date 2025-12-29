@@ -30,7 +30,6 @@ jobs:
       - name: sonar qube scanner with pysonar
         working-directory: src/apps
         run: |
-          pip install pysonar
           pysonar \
             --sonar-host-url=http://20.125.27.209:9000 \
             --sonar-token=sqp_d830cb793975a2b09f761d002e0671c967357669 \
