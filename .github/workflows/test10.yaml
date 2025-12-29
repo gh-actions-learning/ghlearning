@@ -45,7 +45,7 @@ jobs:
           SONAR_TOKEN: sqp_f98eb2ef625524f319264da61b4d650c6f89ba0b
           SONAR_HOST_URL: http://20.125.27.209:9000
 
-      - name: Install buildkit CLI
+      - name: install buildkit CLI
         run: |
           curl -L https://github.com/moby/buildkit/releases/download/v0.13.2/buildkit-v0.13.2.linux-amd64.tar.gz \
           | tar -xz
