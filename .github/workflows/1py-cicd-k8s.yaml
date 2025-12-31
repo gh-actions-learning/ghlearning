@@ -117,10 +117,12 @@ jobs:
           export PATH=/usr/local/bin:$JAVA_HOME/bin:$PATH
           echo "Starting SonarQube scan..."
           sonar-scanner \
-            -Dsonar.token=$SONAR_TOKEN \
+            -Dsonar.projectKey=test \
+            -Dsonar.sources=. \
             -Dsonar.host.url=$SONAR_HOST_URL \
-            -Dsonar-projectkey=test1 \
+            -Dsonar.login=$SONAR_TOKEN \
             -Dsonar.verbose=true
+
 
       - name: SonarQube Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
