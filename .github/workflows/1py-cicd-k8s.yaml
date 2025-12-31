@@ -65,8 +65,10 @@ jobs:
           fi
           echo "📦 Extracting..."
           unzip -q "$SC_ZIP"
-          sudo mv sonar-scanner-* "$SC_DIR"
+          sudo rm -rf "$SC_DIR"                         # ← add this line
+          sudo mv sonar-scanner-* "$SC_DIR"             # ← now this will succeed
           sudo ln -sf "${SC_DIR}/bin/sonar-scanner" /usr/local/bin/sonar-scanner
+
           echo "✅ SonarScanner installed successfully"
 
           # <<< CRITICAL FIX >>>
