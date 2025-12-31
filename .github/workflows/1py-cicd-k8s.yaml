@@ -116,8 +116,6 @@ jobs:
           PATH: /home/runner/_work/_tool/Java_Temurin-Hotspot_jdk/17.0.17-10/aarch64/bin:${PATH}
         run: |
           echo "Starting SonarQube scan..."
-          echo "Java: $(which java)"
-          echo "SonarScanner: $(which sonar-scanner)"
           sonar-scanner \
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.host.url=$SONAR_HOST_URL \
