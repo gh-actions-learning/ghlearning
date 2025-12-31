@@ -65,9 +65,17 @@ jobs:
           fi
           echo "📦 Extracting..."
           unzip -q "$SC_ZIP"
-          sudo rm -rf "$SC_DIR"                         # ← add this line
-          sudo mv sonar-scanner-* "$SC_DIR"             # ← now this will succeed
+
+          # Remove old scanner dir if exists
+          sudo rm -rf "$SC_DIR"
+          sudo mkdir -p "$SC_DIR"               # ← ensure the directory exists
+
+          # Move extracted files inside
+          sudo mv sonar-scanner-*/* "$SC_DIR"/  # ← note the /* to move contents, not folder
+
+          # Symlink executable
           sudo ln -sf "${SC_DIR}/bin/sonar-scanner" /usr/local/bin/sonar-scanner
+
 
           echo "✅ SonarScanner installed successfully"
 
