@@ -64,7 +64,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           sonar-scanner \
-            -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.login=$SONAR_TOKEN \
+            -Dsonar.scanner.skipJreProvisioning=true
 
       # 🔽🔽🔽 QUALITY GATE 🔽🔽🔽
       - name: Sonar Quality Gate Check
