@@ -117,7 +117,7 @@ jobs:
           export PATH=/usr/local/bin:$JAVA_HOME/bin:$PATH
           echo "Starting SonarQube scan..."
           sonar-scanner \
-            -Dsonar.projectKey=test \
+            -Dsonar.projectKey=test1 \
             -Dsonar.sources=. \
             -Dsonar.host.url=$SONAR_HOST_URL \
             -Dsonar.login=$SONAR_TOKEN \
