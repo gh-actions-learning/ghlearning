@@ -45,10 +45,12 @@ jobs:
       - name: Install SonarScanner
         run: |
           set -e
-          SC_VERSION="5.0.1.3006"
+          SC_VERSION="7.3.0.5189"
           SC_DIR="/opt/sonar-scanner"
           SC_ZIP="sonar-scanner-cli-${SC_VERSION}-linux-aarch64.zip"
           SC_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/${SC_ZIP}"
+
+
 
           if [ -d "${SC_DIR}/jre" ]; then
             echo "🗑 Removing bundled JRE..."
