@@ -119,6 +119,7 @@ jobs:
           sonar-scanner \
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar-projectkey=test1 \
             -Dsonar.verbose=true
 
       - name: SonarQube Quality Gate
