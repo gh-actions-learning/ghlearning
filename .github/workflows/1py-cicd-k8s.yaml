@@ -66,7 +66,6 @@ jobs:
           echo "📦 Extracting..."
           unzip -q "$SC_ZIP"
           sudo mv sonar-scanner-* "$SC_DIR"
-          rm "$SC_ZIP"
           sudo ln -sf "${SC_DIR}/bin/sonar-scanner" /usr/local/bin/sonar-scanner
           echo "✅ SonarScanner installed successfully"
 
