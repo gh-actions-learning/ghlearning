@@ -50,27 +50,23 @@ jobs:
           SC_ZIP="sonar-scanner-cli-${SC_VERSION}-linux-aarch64.zip"
           SC_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/${SC_ZIP}"
 
-          echo "🔍 Checking SonarScanner installation..."
-          if [ -d "${SC_DIR}" ]; then
-            echo "✅ SonarScanner already installed at ${SC_DIR}"
-          else
-            echo "⬇️ Downloading SonarScanner ${SC_VERSION} for ARM64..."
-            curl -fLo "$SC_ZIP" "$SC_URL"
-            if [ ! -f "$SC_ZIP" ] || [ ! -s "$SC_ZIP" ]; then
-              echo "❌ Failed to download SonarScanner. Check URL/network."
-              exit 1
-            fi
-            echo "📦 Extracting..."
-            unzip -q "$SC_ZIP"
-            sudo mv sonar-scanner-* "$SC_DIR"
-            rm "$SC_ZIP"
-            if [ -d "${SC_DIR}/jre" ]; then
-              echo "🗑 Removing bundled JRE..."
-              sudo rm -rf "${SC_DIR}/jre"
-            fi
-            sudo ln -sf "${SC_DIR}/bin/sonar-scanner" /usr/local/bin/sonar-scanner
-            echo "✅ SonarScanner installed successfully"
+          if [ -d "${SC_DIR}/jre" ]; then
+            echo "🗑 Removing bundled JRE..."
+            sudo rm -rf "${SC_DIR}/jre"
           fi
+
+          echo "⬇️ Downloading SonarScanner ${SC_VERSION} for ARM64..."
+          curl -fLo "$SC_ZIP" "$SC_URL"
+          if [ ! -f "$SC_ZIP" ] || [ ! -s "$SC_ZIP" ]; then
+            echo "❌ Failed to download SonarScanner. Check URL/network."
+            exit 1
+          fi
+          echo "📦 Extracting..."
+          unzip -q "$SC_ZIP"
+          sudo mv sonar-scanner-* "$SC_DIR"
+          rm "$SC_ZIP"
+          sudo ln -sf "${SC_DIR}/bin/sonar-scanner" /usr/local/bin/sonar-scanner
+          echo "✅ SonarScanner installed successfully"
 
           # <<< CRITICAL FIX >>>
           export JAVA_HOME=/home/runner/_work/_tool/Java_Temurin-Hotspot_jdk/17.0.17-10/aarch64
