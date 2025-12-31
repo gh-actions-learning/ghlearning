@@ -72,7 +72,6 @@ jobs:
             echo "✅ SonarScanner installed successfully"
           fi
 
-          export PATH="${JAVA_HOME}/bin:${PATH}"
           echo "☕ Java version:"
           java -version
           echo "🔎 SonarScanner version:"
@@ -102,8 +101,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: http://20.125.27.209:9000
-          JAVA_HOME: ${{ env.JAVA_HOME }}
-          PATH: ${{ env.JAVA_HOME }}/bin:${{ env.PATH }}
         run: |
           echo "Starting SonarQube scan..."
           echo "Java: $(which java)"
@@ -153,7 +150,6 @@ jobs:
           else
             echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
             echo "additional_tag=" >> $GITHUB_OUTPUT
-          fi
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
