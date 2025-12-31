@@ -72,6 +72,10 @@ jobs:
             echo "✅ SonarScanner installed successfully"
           fi
 
+          # <<< CRITICAL FIX >>>
+          export JAVA_HOME=/home/runner/_work/_tool/Java_Temurin-Hotspot_jdk/17.0.17-10/aarch64
+          export PATH="$JAVA_HOME/bin:$PATH"
+
           echo "☕ Java version:"
           java -version
           echo "🔎 SonarScanner version:"
@@ -101,6 +105,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: http://20.125.27.209:9000
+          JAVA_HOME: /home/runner/_work/_tool/Java_Temurin-Hotspot_jdk/17.0.17-10/aarch64
+          PATH: /home/runner/_work/_tool/Java_Temurin-Hotspot_jdk/17.0.17-10/aarch64/bin:${PATH}
         run: |
           echo "Starting SonarQube scan..."
           echo "Java: $(which java)"
